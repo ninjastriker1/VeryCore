@@ -1,0 +1,221 @@
+{
+    "iPhone16,2": {
+        "manufacturer": "Apple",
+        "name": "iPhone 15 Pro Max",
+        "releaseYear": 2023,
+        "ram": "8 GB",
+        "cpu": "Apple A17 Pro",
+        "gpu": "Apple GPU",
+        "battery": {
+            "capacity_mAh": 4441,
+            "type": "Lithium-ion"
+        },
+        "cameras": "48 MP Main + 12 MP Ultra Wide + 12 MP 5x Telephoto",
+        "sensors": "Face ID, LiDAR Scanner, Accelerometer, Gyroscope, Proximity, Ambient Light, Barometer, Magnetometer",
+        "connectionPort": "USB-C",
+        "connectionStandard": "USB 3 up to 10 Gb/s",
+        "display": "6.7-inch Super Retina XDR OLED, ProMotion 120 Hz",
+        "biometric": "Face ID",
+        "waterResistance": "IP68"
+    },
+
+    "iPhone16,1": {
+        "manufacturer": "Apple",
+        "name": "iPhone 15 Pro",
+        "releaseYear": 2023,
+        "ram": "8 GB",
+        "cpu": "Apple A17 Pro",
+        "gpu": "Apple GPU",
+        "battery": {
+            "capacity_mAh": 3274,
+            "type": "Lithium-ion"
+        },
+        "cameras": "48 MP Main + 12 MP Ultra Wide + 12 MP 3x Telephoto",
+        "sensors": "Face ID, LiDAR Scanner, Accelerometer, Gyroscope, Proximity, Ambient Light, Barometer, Magnetometer",
+        "connectionPort": "USB-C",
+        "connectionStandard": "USB 3 up to 10 Gb/s",
+        "display": "6.1-inch Super Retina XDR OLED, ProMotion 120 Hz",
+        "biometric": "Face ID",
+        "waterResistance": "IP68"
+    },
+
+    "iPhone15,5": {
+        "manufacturer": "Apple",
+        "name": "iPhone 15 Plus",
+        "releaseYear": 2023,
+        "ram": "6 GB",
+        "cpu": "Apple A16 Bionic",
+        "gpu": "Apple GPU",
+        "battery": {
+            "capacity_mAh": 4383,
+            "type": "Lithium-ion"
+        },
+        "cameras": "48 MP Main + 12 MP Ultra Wide",
+        "sensors": "Face ID, Accelerometer, Gyroscope, Proximity, Ambient Light, Barometer, Magnetometer",
+        "connectionPort": "USB-C",
+        "connectionStandard": "USB 2",
+        "display": "6.7-inch Super Retina XDR OLED",
+        "biometric": "Face ID",
+        "waterResistance": "IP68"
+    },
+
+    "iPhone15,4": {
+        "manufacturer": "Apple",
+        "name": "iPhone 15",
+        "releaseYear": 2023,
+        "ram": "6 GB",
+        "cpu": "Apple A16 Bionic",
+        "gpu": "Apple GPU",
+        "battery": {
+            "capacity_mAh": 3349,
+            "type": "Lithium-ion"
+        },
+        "cameras": "48 MP Main + 12 MP Ultra Wide",
+        "sensors": "Face ID, Accelerometer, Gyroscope, Proximity, Ambient Light, Barometer, Magnetometer",
+        "connectionPort": "USB-C",
+        "connectionStandard": "USB 2",
+        "display": "6.1-inch Super Retina XDR OLED",
+        "biometric": "Face ID",
+        "waterResistance": "IP68"
+    },
+
+    "iPhone15,3": {
+        "manufacturer": "Apple",
+        "name": "iPhone 14 Pro Max",
+        "releaseYear": 2022,
+        "ram": "6 GB",
+        "cpu": "Apple A16 Bionic",
+        "gpu": "Apple GPU",
+        "battery": {
+            "capacity_mAh": 4323,
+            "type": "Lithium-ion"
+        },
+        "cameras": "48 MP Main + 12 MP Ultra Wide + 12 MP 3x Telephoto",
+        "sensors": "Face ID, LiDAR Scanner, Accelerometer, Gyroscope, Proximity, Ambient Light, Barometer, Magnetometer",
+        "connectionPort": "Lightning",
+        "connectionStandard": "USB 2",
+        "display": "6.7-inch Super Retina XDR OLED, ProMotion 120 Hz",
+        "biometric": "Face ID",
+        "waterResistance": "IP68"
+    },
+
+    "iPhone15,2": {
+        "manufacturer": "Apple",
+        "name": "iPhone 14 Pro",
+        "releaseYear": 2022,
+        "ram": "6 GB",
+        "cpu": "Apple A16 Bionic",
+        "gpu": "Apple GPU",
+        "battery": {
+            "capacity_mAh": 3200,
+            "type": "Lithium-ion"
+        },
+        "cameras": "48 MP Main + 12 MP Ultra Wide + 12 MP 3x Telephoto",
+        "sensors": "Face ID, LiDAR Scanner, Accelerometer, Gyroscope, Proximity, Ambient Light, Barometer, Magnetometer",
+        "connectionPort": "Lightning",
+        "connectionStandard": "USB 2",
+        "display": "6.1-inch Super Retina XDR OLED, ProMotion 120 Hz",
+        "biometric": "Face ID",
+        "waterResistance": "IP68"
+    },
+
+    "iPhone14,8": {
+        "manufacturer": "Apple",
+        "name": "iPhone 14 Plus",
+        "releaseYear": 2022,
+        "ram": "6 GB",
+        "cpu": "Apple A15 Bionic",
+        "gpu": "5-core Apple GPU",
+        "battery": {
+            "capacity_mAh": 4325,
+            "type": "Lithium-ion"
+        },
+        "cameras": "12 MP Main + 12 MP Ultra Wide",
+        "sensors": "Face ID, Accelerometer, Gyroscope, Proximity, Ambient Light, Barometer, Magnetometer",
+        "connectionPort": "Lightning",
+        "connectionStandard": "USB 2",
+        "display": "6.7-inch Super Retina XDR OLED",
+        "biometric": "Face ID",
+        "waterResistance": "IP68"
+    },
+
+    "iPhone14,7": {
+        "manufacturer": "Apple",
+        "name": "iPhone 14",
+        "releaseYear": 2022,
+        "ram": "6 GB",
+        "cpu": "Apple A15 Bionic",
+        "gpu": "5-core Apple GPU",
+        "battery": {
+            "capacity_mAh": 3279,
+            "type": "Lithium-ion"
+        },
+        "cameras": "12 MP Main + 12 MP Ultra Wide",
+        "sensors": "Face ID, Accelerometer, Gyroscope, Proximity, Ambient Light, Barometer, Magnetometer",
+        "connectionPort": "Lightning",
+        "connectionStandard": "USB 2",
+        "display": "6.1-inch Super Retina XDR OLED",
+        "biometric": "Face ID",
+        "waterResistance": "IP68"
+    },
+
+    "iPhone14,3": {
+        "manufacturer": "Apple",
+        "name": "iPhone 13 Pro Max",
+        "releaseYear": 2021,
+        "ram": "6 GB",
+        "cpu": "Apple A15 Bionic",
+        "gpu": "5-core Apple GPU",
+        "battery": {
+            "capacity_mAh": 4352,
+            "type": "Lithium-ion"
+        },
+        "cameras": "12 MP Main + 12 MP Ultra Wide + 12 MP 3x Telephoto",
+        "sensors": "Face ID, LiDAR Scanner, Accelerometer, Gyroscope, Proximity, Ambient Light, Barometer, Magnetometer",
+        "connectionPort": "Lightning",
+        "connectionStandard": "USB 2",
+        "display": "6.7-inch Super Retina XDR OLED, ProMotion 120 Hz",
+        "biometric": "Face ID",
+        "waterResistance": "IP68"
+    },
+
+    "iPhone14,2": {
+        "manufacturer": "Apple",
+        "name": "iPhone 13 Pro",
+        "releaseYear": 2021,
+        "ram": "6 GB",
+        "cpu": "Apple A15 Bionic",
+        "gpu": "5-core Apple GPU",
+        "battery": {
+            "capacity_mAh": 3095,
+            "type": "Lithium-ion"
+        },
+        "cameras": "12 MP Main + 12 MP Ultra Wide + 12 MP 3x Telephoto",
+        "sensors": "Face ID, LiDAR Scanner, Accelerometer, Gyroscope, Proximity, Ambient Light, Barometer, Magnetometer",
+        "connectionPort": "Lightning",
+        "connectionStandard": "USB 2",
+        "display": "6.1-inch Super Retina XDR OLED, ProMotion 120 Hz",
+        "biometric": "Face ID",
+        "waterResistance": "IP68"
+    },
+
+    "iPhone14,5": {
+        "manufacturer": "Apple",
+        "name": "iPhone 13",
+        "releaseYear": 2021,
+        "ram": "4 GB",
+        "cpu": "Apple A15 Bionic",
+        "gpu": "4-core Apple GPU",
+        "battery": {
+            "capacity_mAh": 3227,
+            "type": "Lithium-ion"
+        },
+        "cameras": "12 MP Main + 12 MP Ultra Wide",
+        "sensors": "Face ID, Accelerometer, Gyroscope, Proximity, Ambient Light, Barometer, Magnetometer",
+        "connectionPort": "Lightning",
+        "connectionStandard": "USB 2",
+        "display": "6.1-inch Super Retina XDR OLED",
+        "biometric": "Face ID",
+        "waterResistance": "IP68"
+    }
+}

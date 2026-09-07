@@ -1,0 +1,2532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>VeriCore</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0b0f14;
+            color: #f5f7fa;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "SF Pro Display",
+                "SF Pro Text",
+                Arial,
+                sans-serif;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        .app {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #11161d;
+            border-right: 1px solid #252c35;
+            padding: 24px 16px;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px 28px;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #e8faff;
+            color: #0b0f14;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: .3px;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .nav-item {
+            border: 0;
+            background: transparent;
+            color: #8f9aa8;
+            padding: 13px 14px;
+            border-radius: 10px;
+            text-align: left;
+            font-size: 14px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #1c242e;
+            color: #fff;
+        }
+
+        .main {
+            flex: 1;
+            padding: 32px;
+            overflow: auto;
+            min-width: 0;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .title h1 {
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .title p {
+            margin-top: 6px;
+            color: #7f8a98;
+            font-size: 14px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #111820;
+            border: 1px solid #252e38;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            color: #9ba6b4;
+            white-space: nowrap;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4ade80;
+        }
+
+        .hero {
+            background:
+                linear-gradient(
+                    135deg,
+                    #151d27,
+                    #10151c
+                );
+
+            border: 1px solid #27313c;
+            border-radius: 18px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .hero h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #8995a4;
+            max-width: 650px;
+            line-height: 1.6;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        button.action {
+            border: 0;
+            padding: 12px 18px;
+            border-radius: 9px;
+            font-weight: 600;
+            cursor: pointer;
+            background: #dff8ff;
+            color: #081015;
+            transition: .2s;
+        }
+
+        button.action:hover {
+            transform: translateY(-1px);
+            opacity: .92;
+        }
+
+        button.action:disabled {
+            opacity: .55;
+            cursor: wait;
+            transform: none;
+        }
+
+        button.action.secondary {
+            background: #202832;
+            color: #d7dee7;
+            border: 1px solid #303b47;
+        }
+
+        .panel {
+            display: none;
+            margin-top: 24px;
+            background: #0e141b;
+            border: 1px solid #27313c;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .panel.visible {
+            display: block;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .panel-header h3 {
+            font-size: 18px;
+        }
+
+        .panel-header span {
+            color: #7f8b99;
+            font-size: 12px;
+        }
+
+        .message {
+            color: #8995a4;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .diagnostic-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .diagnostic-section {
+            background: #111820;
+            border: 1px solid #252e38;
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .diagnostic-section h4 {
+            font-size: 14px;
+            margin-bottom: 14px;
+        }
+
+        .diagnostic-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #202832;
+        }
+
+        .diagnostic-item:last-child {
+            border-bottom: 0;
+        }
+
+        .diagnostic-label {
+            color: #687584;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .6px;
+            margin-bottom: 4px;
+        }
+
+        .diagnostic-value {
+            color: #e5eaf0;
+            font-size: 13px;
+            word-break: break-word;
+        }
+
+        .verification-section {
+            grid-column: 1 / -1;
+        }
+
+        .verification-row {
+            display: grid;
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .verification-item {
+            background: #0d141b;
+            border: 1px solid #26313c;
+            border-radius: 10px;
+            padding: 14px;
+        }
+
+        .verification-label {
+            color: #748191;
+            font-size: 11px;
+            margin-bottom: 7px;
+        }
+
+        .verification-value {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .verified {
+            color: #4ade80;
+        }
+
+        .warning {
+            color: #fbbf24;
+        }
+
+        .danger {
+            color: #f87171;
+        }
+
+        /* =====================================================
+           MANUAL INSPECTION
+        ===================================================== */
+
+        .manual-inspection-section {
+            margin-top: 24px;
+            background: #0e141b;
+            border: 1px solid #27313c;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .manual-inspection-header {
+            margin-bottom: 20px;
+        }
+
+        .manual-inspection-header h3 {
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+
+        .manual-inspection-header p {
+            font-size: 13px;
+            color: #8995a4;
+            line-height: 1.5;
+        }
+
+        .manual-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .manual-card {
+            background: #111820;
+            border: 1px solid #252e38;
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .manual-card h4 {
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            color: #8995a4;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-bottom: 7px;
+        }
+
+        .form-control {
+            width: 100%;
+            background: #0b1016;
+            border: 1px solid #303b47;
+            color: #e5eaf0;
+            border-radius: 8px;
+            padding: 10px 11px;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .form-control:focus {
+            border-color: #dff8ff;
+        }
+
+        .estimated-result {
+            background: #0d141b;
+            border: 1px solid #26313c;
+            border-radius: 8px;
+            padding: 11px;
+            color: #dff8ff;
+            font-size: 13px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .test-item {
+            background: #0d141b;
+            border: 1px solid #26313c;
+            border-radius: 10px;
+            padding: 13px;
+        }
+
+        .test-item label {
+            display: block;
+            color: #d7dee7;
+            font-size: 12px;
+            margin-bottom: 9px;
+        }
+
+        .report-actions {
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: #11171e;
+            border: 1px solid #252e38;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .card-icon {
+            font-size: 24px;
+            margin-bottom: 18px;
+        }
+
+        .card h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: #7f8b99;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 1100px) {
+
+            .diagnostic-grid,
+            .verification-row,
+            .manual-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .verification-section {
+                grid-column: auto;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 210px;
+            }
+
+            .test-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            .app {
+                display: block;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-right: 0;
+                border-bottom: 1px solid #252c35;
+            }
+
+            .nav {
+                flex-direction: row;
+                overflow-x: auto;
+            }
+
+            .nav-item {
+                white-space: nowrap;
+            }
+
+            .main {
+                padding: 18px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .hero {
+                padding: 20px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                V
+            </div>
+
+            <div class="logo-text">
+                VeriCore
+            </div>
+
+        </div>
+
+        <nav class="nav">
+
+            <button class="nav-item active">
+                Dashboard
+            </button>
+
+            <button class="nav-item">
+                Device Detection
+            </button>
+
+            <button class="nav-item">
+                Diagnostics
+            </button>
+
+            <button class="nav-item">
+                Reports
+            </button>
+
+            <button class="nav-item">
+                Settings
+            </button>
+
+        </nav>
+
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div class="title">
+
+                <h1>
+                    Dashboard
+                </h1>
+
+                <p>
+                    Device verification and diagnostics
+                </p>
+
+            </div>
+
+            <div class="status">
+
+                <span class="status-dot"></span>
+
+                VeriCore Engine Ready
+
+            </div>
+
+        </div>
+
+        <section class="hero">
+
+            <h2>
+                Welcome to VeriCore
+            </h2>
+
+            <p>
+                Detect, verify and diagnose smartphones with a
+                professional device-verification system.
+            </p>
+
+            <div class="actions">
+
+                <button
+                    class="action"
+                    id="detectBtn"
+                >
+                    Detect Device
+                </button>
+
+                <button
+                    class="action secondary"
+                    id="diagnosticBtn"
+                    disabled
+                >
+                    Run Diagnostics
+                </button>
+
+            </div>
+
+            <!-- =================================================
+                 DETECTION PANEL
+            ================================================== -->
+
+            <div
+                class="panel"
+                id="detectionPanel"
+            >
+
+                <div class="panel-header">
+
+                    <h3>
+                        Device Detection
+                    </h3>
+
+                    <span id="detectionStatus">
+                        Ready
+                    </span>
+
+                </div>
+
+                <div
+                    class="message"
+                    id="detectionMessage"
+                >
+                    No device detected.
+                </div>
+
+                <div
+                    class="diagnostic-grid"
+                    id="detectedDeviceGrid"
+                ></div>
+
+            </div>
+
+            <!-- =================================================
+                 DIAGNOSTICS PANEL
+            ================================================== -->
+
+            <div
+                class="panel"
+                id="diagnosticsPanel"
+            >
+
+                <div class="panel-header">
+
+                    <h3>
+                        Diagnostics Results
+                    </h3>
+
+                    <span id="diagnosticsStatus">
+                        Waiting
+                    </span>
+
+                </div>
+
+                <div
+                    class="message"
+                    id="diagnosticsMessage"
+                >
+                    Connect and detect a device first.
+                </div>
+
+                <div
+                    class="diagnostic-grid"
+                    id="diagnosticsGrid"
+                ></div>
+
+            </div>
+
+            <!-- =================================================
+                 MANUAL FUNCTIONAL INSPECTION
+            ================================================== -->
+
+            <section
+                class="manual-inspection-section"
+                id="manualInspectionPanel"
+                style="display: none;"
+            >
+
+                <div class="manual-inspection-header">
+
+                    <h3>
+                        Manual Functional Inspection
+                    </h3>
+
+                    <p>
+                        Test the physical functions that cannot be
+                        reliably verified through a USB connection.
+                    </p>
+
+                </div>
+
+                <div class="manual-grid">
+
+                    <!-- BATTERY -->
+
+                    <div class="manual-card">
+
+                        <h4>
+                            🔋 Battery Inspection
+                        </h4>
+
+                        <div class="form-group">
+
+                            <label for="batteryHealthInput">
+                                Battery Health (%)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="batteryHealthInput"
+                                class="form-control"
+                                min="1"
+                                max="100"
+                                placeholder="Example: 86"
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="cycleCountInput">
+                                Cycle Count
+                            </label>
+
+                            <input
+                                type="number"
+                                id="cycleCountInput"
+                                class="form-control"
+                                min="0"
+                                placeholder="Example: 781"
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label>
+                                Estimated Current Capacity
+                            </label>
+
+                            <div
+                                class="estimated-result"
+                                id="estimatedCapacity"
+                            >
+                                Enter battery health first.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- DISPLAY -->
+
+                    <div class="manual-card">
+
+                        <h4>
+                            📱 Display Tests
+                        </h4>
+
+                        <div class="test-grid">
+
+                            <div class="test-item">
+
+                                <label>
+                                    Display
+                                </label>
+
+                                <select
+                                    class="form-control"
+                                    id="displayTest"
+                                >
+                                    <option value="Not tested">
+                                        Not tested
+                                    </option>
+
+                                    <option value="Working">
+                                        Working
+                                    </option>
+
+                                    <option value="Not working">
+                                        Not working
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="test-item">
+
+                                <label>
+                                    Touch Screen
+                                </label>
+
+                                <select
+                                    class="form-control"
+                                    id="touchTest"
+                                >
+                                    <option value="Not tested">
+                                        Not tested
+                                    </option>
+
+                                    <option value="Working">
+                                        Working
+                                    </option>
+
+                                    <option value="Not working">
+                                        Not working
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- CAMERA -->
+
+                    <div class="manual-card">
+
+                        <h4>
+                            📷 Camera Tests
+                        </h4>
+
+                        <div class="test-grid">
+
+                            <div class="test-item">
+
+                                <label>
+                                    Rear Camera
+                                </label>
+
+                                <select
+                                    class="form-control"
+                                    id="rearCameraTest"
+                                >
+                                    <option value="Not tested">
+                                        Not tested
+                                    </option>
+
+                                    <option value="Working">
+                                        Working
+                                    </option>
+
+                                    <option value="Not working">
+                                        Not working
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="test-item">
+
+                                <label>
+                                    Front Camera
+                                </label>
+
+                                <select
+                                    class="form-control"
+                                    id="frontCameraTest"
+                                >
+                                    <option value="Not tested">
+                                        Not tested
+                                    </option>
+
+                                    <option value="Working">
+                                        Working
+                                    </option>
+
+                                    <option value="Not working">
+                                        Not working
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="test-item">
+
+                                <label>
+                                    Flash
+                                </label>
+
+                                <select
+                                    class="form-control"
+                                    id="flashTest"
+                                >
+                                    <option value="Not tested">
+                                        Not tested
+                                    </option>
+
+                                    <option value="Working">
+                                        Working
+                                    </option>
+
+                                    <option value="Not working">
+                                        Not working
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- BIOMETRIC -->
+
+                    <div class="manual-card">
+
+                        <h4>
+                            🔐 Biometric Test
+                        </h4>
+
+                        <div class="form-group">
+
+                            <label id="biometricLabel">
+                                Face ID
+                            </label>
+
+                            <select
+                                class="form-control"
+                                id="biometricTest"
+                            >
+
+                                <option value="Not tested">
+                                    Not tested
+                                </option>
+
+                                <option value="Working">
+                                    Working
+                                </option>
+
+                                <option value="Not working">
+                                    Not working
+                                </option>
+
+                                <option value="Not available">
+                                    Not available
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <!-- BUTTONS -->
+
+                    <div class="manual-card">
+
+                        <h4>
+                            🔘 Button Tests
+                        </h4>
+
+                        <div class="test-grid">
+
+                            <div class="test-item">
+
+                                <label>
+                                    Power Button
+                                </label>
+
+                                <select
+                                    class="form-control"
+                                    id="powerButtonTest"
+                                >
+                                    <option value="Not tested">
+                                        Not tested
+                                    </option>
+
+                                    <option value="Working">
+                                        Working
+                                    </option>
+
+                                    <option value="Not working">
+                                        Not working
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="test-item">
+
+                                <label>
+                                    Volume Up
+                                </label>
+
+                                <select
+                                    class="form-control"
+                                    id="volumeUpTest"
+                                >
+                                    <option value="Not tested">
+                                        Not tested
+                                    </option>
+
+                                    <option value="Working">
+                                        Working
+                                    </option>
+
+                                    <option value="Not working">
+                                        Not working
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="test-item">
+
+                                <label>
+                                    Volume Down
+                                </label>
+
+                                <select
+                                    class="form-control"
+                                    id="volumeDownTest"
+                                >
+                                    <option value="Not tested">
+                                        Not tested
+                                    </option>
+
+                                    <option value="Working">
+                                        Working
+                                    </option>
+
+                                    <option value="Not working">
+                                        Not working
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- AUDIO -->
+
+                    <div class="manual-card">
+
+                        <h4>
+                            🔊 Audio Tests
+                        </h4>
+
+                        <div class="test-grid">
+
+                            <div class="test-item">
+
+                                <label>
+                                    Speaker
+                                </label>
+
+                                <select
+                                    class="form-control"
+                                    id="speakerTest"
+                                >
+                                    <option value="Not tested">
+                                        Not tested
+                                    </option>
+
+                                    <option value="Working">
+                                        Working
+                                    </option>
+
+                                    <option value="Not working">
+                                        Not working
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="test-item">
+
+                                <label>
+                                    Earpiece
+                                </label>
+
+                                <select
+                                    class="form-control"
+                                    id="earpieceTest"
+                                >
+                                    <option value="Not tested">
+                                        Not tested
+                                    </option>
+
+                                    <option value="Working">
+                                        Working
+                                    </option>
+
+                                    <option value="Not working">
+                                        Not working
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="test-item">
+
+                                <label>
+                                    Microphone
+                                </label>
+
+                                <select
+                                    class="form-control"
+                                    id="microphoneTest"
+                                >
+                                    <option value="Not tested">
+                                        Not tested
+                                    </option>
+
+                                    <option value="Working">
+                                        Working
+                                    </option>
+
+                                    <option value="Not working">
+                                        Not working
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- OTHER -->
+
+                    <div class="manual-card">
+
+                        <h4>
+                            🔌 Other Functional Tests
+                        </h4>
+
+                        <div class="test-grid">
+
+                            <div class="test-item">
+
+                                <label>
+                                    Charging
+                                </label>
+
+                                <select
+                                    class="form-control"
+                                    id="chargingTest"
+                                >
+                                    <option value="Not tested">
+                                        Not tested
+                                    </option>
+
+                                    <option value="Working">
+                                        Working
+                                    </option>
+
+                                    <option value="Not working">
+                                        Not working
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="test-item">
+
+                                <label>
+                                    Vibration
+                                </label>
+
+                                <select
+                                    class="form-control"
+                                    id="vibrationTest"
+                                >
+                                    <option value="Not tested">
+                                        Not tested
+                                    </option>
+
+                                    <option value="Working">
+                                        Working
+                                    </option>
+
+                                    <option value="Not working">
+                                        Not working
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="report-actions">
+
+                    <button
+                        class="action secondary"
+                        id="runAgainBtn"
+                    >
+                        Run Diagnostics Again
+                    </button>
+
+                    <button
+                        class="action"
+                        id="generateReportBtn"
+                    >
+                        Generate Report
+                    </button>
+
+                </div>
+
+            </section>
+
+        </section>
+
+        <section class="cards">
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📱
+                </div>
+
+                <h3>
+                    Device Detection
+                </h3>
+
+                <p>
+                    Identify connected iPhone and Android devices
+                    automatically.
+                </p>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-icon">
+                    🔍
+                </div>
+
+                <h3>
+                    Component Diagnostics
+                </h3>
+
+                <p>
+                    Inspect battery, storage, hardware and device
+                    information.
+                </p>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-icon">
+                    ✓
+                </div>
+
+                <h3>
+                    Verification Report
+                </h3>
+
+                <p>
+                    Generate a clear professional diagnostic report.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script>
+
+let detectedDevice = null;
+let lastDiagnostics = null;
+
+
+/* ============================================================
+   ELEMENTS
+============================================================ */
+
+const detectBtn =
+    document.getElementById('detectBtn');
+
+const diagnosticBtn =
+    document.getElementById('diagnosticBtn');
+
+const runAgainBtn =
+    document.getElementById('runAgainBtn');
+
+const generateReportBtn =
+    document.getElementById('generateReportBtn');
+
+const detectionPanel =
+    document.getElementById('detectionPanel');
+
+const diagnosticsPanel =
+    document.getElementById('diagnosticsPanel');
+
+const manualInspectionPanel =
+    document.getElementById('manualInspectionPanel');
+
+const detectionMessage =
+    document.getElementById('detectionMessage');
+
+const detectionStatus =
+    document.getElementById('detectionStatus');
+
+const detectedDeviceGrid =
+    document.getElementById('detectedDeviceGrid');
+
+const diagnosticsMessage =
+    document.getElementById('diagnosticsMessage');
+
+const diagnosticsStatus =
+    document.getElementById('diagnosticsStatus');
+
+const diagnosticsGrid =
+    document.getElementById('diagnosticsGrid');
+
+const batteryHealthInput =
+    document.getElementById('batteryHealthInput');
+
+const cycleCountInput =
+    document.getElementById('cycleCountInput');
+
+const estimatedCapacity =
+    document.getElementById('estimatedCapacity');
+
+const biometricLabel =
+    document.getElementById('biometricLabel');
+
+
+/* ============================================================
+   SECURITY / HTML ESCAPING
+============================================================ */
+
+function escapeHTML(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+        return '';
+    }
+
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+
+/* ============================================================
+   UI HELPERS
+============================================================ */
+
+function getValue(value, fallback = 'Unknown') {
+
+    return (
+        value === undefined ||
+        value === null ||
+        value === ''
+    )
+        ? fallback
+        : value;
+}
+
+
+function createDetail(label, value) {
+
+    return `
+        <div class="diagnostic-item">
+
+            <div class="diagnostic-label">
+                ${escapeHTML(label)}
+            </div>
+
+            <div class="diagnostic-value">
+                ${escapeHTML(
+                    getValue(value)
+                )}
+            </div>
+
+        </div>
+    `;
+}
+
+
+function createSection(title, values) {
+
+    let content = '';
+
+    Object.entries(values).forEach(
+        ([label, value]) => {
+
+            content += createDetail(
+                label,
+                value
+            );
+
+        }
+    );
+
+    return `
+        <div class="diagnostic-section">
+
+            <h4>
+                ${escapeHTML(title)}
+            </h4>
+
+            ${content}
+
+        </div>
+    `;
+}
+
+
+/* ============================================================
+   VERIFICATION SECTION
+============================================================ */
+
+function getVerificationClass(value) {
+
+    if (
+        value === true ||
+        value === 'Passed' ||
+        value === 'Verified'
+    ) {
+        return 'verified';
+    }
+
+    if (
+        value === false ||
+        value === 'Failed'
+    ) {
+        return 'danger';
+    }
+
+    return 'warning';
+}
+
+
+function createVerificationSection(
+    verification
+) {
+
+    verification =
+        verification || {};
+
+    const suspicious =
+        verification.suspiciousComponents ||
+        'None detected';
+
+    const suspiciousClass =
+        suspicious === 'None detected'
+            ? 'verified'
+            : 'warning';
+
+    return `
+        <div class="diagnostic-section verification-section">
+
+            <h4>
+                VeriCore Verification
+            </h4>
+
+            <div class="verification-row">
+
+                <div class="verification-item">
+
+                    <div class="verification-label">
+                        Overall Score
+                    </div>
+
+                    <div class="verification-value">
+                        ${escapeHTML(
+                            getValue(
+                                verification.overallScore
+                            )
+                        )}
+                    </div>
+
+                </div>
+
+                <div class="verification-item">
+
+                    <div class="verification-label">
+                        Repair Decision
+                    </div>
+
+                    <div class="verification-value">
+                        ${escapeHTML(
+                            getValue(
+                                verification.decision
+                            )
+                        )}
+                    </div>
+
+                </div>
+
+                <div class="verification-item">
+
+                    <div class="verification-label">
+                        Priority
+                    </div>
+
+                    <div class="verification-value">
+                        ${escapeHTML(
+                            getValue(
+                                verification.priority
+                            )
+                        )}
+                    </div>
+
+                </div>
+
+                <div class="verification-item">
+
+                    <div class="verification-label">
+                        Suspicious Components
+                    </div>
+
+                    <div
+                        class="verification-value ${suspiciousClass}"
+                    >
+                        ${escapeHTML(suspicious)}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* ============================================================
+   MODEL REFERENCE BATTERY CAPACITY
+============================================================ */
+
+function getReferenceBatteryCapacity() {
+
+    if (!lastDiagnostics) {
+        return null;
+    }
+
+    const capacity =
+        lastDiagnostics?.battery?.designCapacity;
+
+    if (!capacity) {
+        return null;
+    }
+
+    const match =
+        String(capacity).match(/\d+/);
+
+    return match
+        ? Number(match[0])
+        : null;
+}
+
+
+/* ============================================================
+   BATTERY ESTIMATION
+============================================================ */
+
+function updateBatteryEstimate() {
+
+    const health =
+        Number(
+            batteryHealthInput.value
+        );
+
+    const referenceCapacity =
+        getReferenceBatteryCapacity();
+
+    if (
+        !health ||
+        health < 1 ||
+        health > 100
+    ) {
+
+        estimatedCapacity.textContent =
+            'Enter a battery health value between 1 and 100%.';
+
+        return;
+    }
+
+    if (!referenceCapacity) {
+
+        estimatedCapacity.textContent =
+            'Model reference capacity is not available.';
+
+        return;
+    }
+
+    const estimated =
+        Math.round(
+            referenceCapacity *
+            (health / 100)
+        );
+
+    estimatedCapacity.textContent =
+        `${estimated} mAh estimated from ${referenceCapacity} mAh reference capacity`;
+}
+
+
+batteryHealthInput.addEventListener(
+    'input',
+    updateBatteryEstimate
+);
+
+
+/* ============================================================
+   BIOMETRIC LABEL
+============================================================ */
+
+function updateBiometricLabel() {
+
+    if (!detectedDevice) {
+        biometricLabel.textContent =
+            'Biometric Authentication';
+
+        return;
+    }
+
+    if (
+        detectedDevice.platform ===
+        'iPhone'
+    ) {
+
+        biometricLabel.textContent =
+            'Face ID / Touch ID';
+
+    } else {
+
+        biometricLabel.textContent =
+            'Fingerprint / Biometric';
+    }
+}
+
+
+/* ============================================================
+   DETECT DEVICE
+============================================================ */
+
+detectBtn.addEventListener(
+    'click',
+    async () => {
+
+        detectBtn.disabled = true;
+
+        detectBtn.textContent =
+            'Scanning...';
+
+        diagnosticBtn.disabled = true;
+
+        diagnosticsPanel.classList.remove(
+            'visible'
+        );
+
+        manualInspectionPanel.style.display =
+            'none';
+
+        detectionPanel.classList.add(
+            'visible'
+        );
+
+        detectionStatus.textContent =
+            'Scanning';
+
+        detectionMessage.textContent =
+            'Checking USB connections for iPhone and Android devices...';
+
+        detectedDeviceGrid.innerHTML =
+            '';
+
+        try {
+
+            const result =
+                await window.vericore.detectDevice();
+
+            if (
+                result.status === 'connected' &&
+                result.device
+            ) {
+
+                detectedDevice =
+                    result.device;
+
+                detectionStatus.textContent =
+                    'Connected';
+
+                detectionMessage.textContent =
+                    result.message ||
+                    'Device connected successfully.';
+
+                updateBiometricLabel();
+
+                if (
+                    detectedDevice.platform ===
+                    'iPhone'
+                ) {
+
+                    detectedDeviceGrid.innerHTML =
+
+                        createSection(
+                            'Device',
+                            {
+                                Platform:
+                                    'iPhone',
+
+                                Name:
+                                    detectedDevice.name,
+
+                                Model:
+                                    detectedDevice.model,
+
+                                'Product Type':
+                                    detectedDevice.productType,
+
+                                'iOS Version':
+                                    detectedDevice.iosVersion
+                            }
+                        ) +
+
+                        createSection(
+                            'Identification',
+                            {
+                                'Serial Number':
+                                    detectedDevice.serialNumber,
+
+                                UDID:
+                                    detectedDevice.udid,
+
+                                Connection:
+                                    detectedDevice.connection
+                            }
+                        );
+
+                } else {
+
+                    detectedDeviceGrid.innerHTML =
+
+                        createSection(
+                            'Device',
+                            {
+                                Platform:
+                                    'Android',
+
+                                Manufacturer:
+                                    detectedDevice.manufacturer,
+
+                                Model:
+                                    detectedDevice.model,
+
+                                'Android Version':
+                                    detectedDevice.androidVersion
+                            }
+                        ) +
+
+                        createSection(
+                            'Identification',
+                            {
+                                Serial:
+                                    detectedDevice.serial,
+
+                                Connection:
+                                    detectedDevice.connection
+                            }
+                        );
+                }
+
+                diagnosticBtn.disabled =
+                    false;
+
+            } else {
+
+                detectedDevice = null;
+
+                detectionStatus.textContent =
+                    'No Device';
+
+                detectionMessage.textContent =
+                    result.message ||
+                    'No supported phone is connected.';
+
+                diagnosticBtn.disabled =
+                    true;
+            }
+
+        } catch (error) {
+
+            console.error(error);
+
+            detectedDevice = null;
+
+            detectionStatus.textContent =
+                'Error';
+
+            detectionMessage.textContent =
+                'Device detection failed. Check VeriCore dependencies.';
+
+            diagnosticBtn.disabled =
+                true;
+
+        } finally {
+
+            detectBtn.disabled =
+                false;
+
+            detectBtn.textContent =
+                'Detect Device';
+        }
+    }
+);
+
+
+/* ============================================================
+   RUN DIAGNOSTICS
+============================================================ */
+
+async function runDiagnostics() {
+
+    if (!detectedDevice) {
+
+        diagnosticsPanel.classList.add(
+            'visible'
+        );
+
+        diagnosticsStatus.textContent =
+            'No Device';
+
+        diagnosticsMessage.textContent =
+            'Connect and detect a device before running diagnostics.';
+
+        return;
+    }
+
+    diagnosticBtn.disabled = true;
+
+    runAgainBtn.disabled = true;
+
+    generateReportBtn.disabled = true;
+
+    diagnosticsPanel.classList.add(
+        'visible'
+    );
+
+    manualInspectionPanel.style.display =
+        'none';
+
+    diagnosticsStatus.textContent =
+        'Running';
+
+    diagnosticsMessage.textContent =
+        `Running diagnostics on ${
+            detectedDevice.name ||
+            detectedDevice.model ||
+            'device'
+        }...`;
+
+    diagnosticsGrid.innerHTML =
+        '';
+
+    try {
+
+        let result;
+
+        /*
+         * The current bridge may return diagnostics directly
+         * or call the same Python engine again.
+         */
+
+        if (
+            detectedDevice.platform ===
+            'iPhone'
+        ) {
+
+            result =
+                await window.vericore.diagnoseIPhone(
+                    detectedDevice.udid
+                );
+
+        } else {
+
+            result =
+                await window.vericore.diagnoseAndroid(
+                    detectedDevice.serial
+                );
+        }
+
+        if (!result.success) {
+
+            diagnosticsStatus.textContent =
+                'Failed';
+
+            diagnosticsMessage.textContent =
+                result.message ||
+                'Diagnostics failed.';
+
+            return;
+        }
+
+        lastDiagnostics =
+            result.diagnostics;
+
+        if (!lastDiagnostics) {
+
+            diagnosticsStatus.textContent =
+                'Failed';
+
+            diagnosticsMessage.textContent =
+                'No diagnostic data was returned by the VeriCore engine.';
+
+            return;
+        }
+
+        diagnosticsStatus.textContent =
+            'Complete';
+
+        diagnosticsMessage.textContent =
+            'Automatic diagnostics completed. Manual functional tests are now available below.';
+
+        const data =
+            lastDiagnostics;
+
+        const device =
+            data.device || {};
+
+        const battery =
+            data.battery || {};
+
+        const hardware =
+            data.hardware || {};
+
+        diagnosticsGrid.innerHTML =
+
+            createSection(
+                'Device Information',
+                {
+                    Model:
+                        device.model,
+
+                    Manufacturer:
+                        device.manufacturer,
+
+                    'OS Version':
+                        device.iosVersion ||
+                        device.androidVersion,
+
+                    'Serial Number':
+                        device.serialNumber ||
+                        device.serial,
+
+                    Connection:
+                        device.connection
+                }
+            ) +
+
+            createSection(
+                'Battery Reference',
+                {
+                    'Model Reference Capacity':
+                        battery.designCapacity,
+
+                    'Automatic Battery Health':
+                        battery.health ||
+                        'Manual input required',
+
+                    'Automatic Cycle Count':
+                        battery.cycleCount ||
+                        'Manual input required'
+                }
+            ) +
+
+            createSection(
+                'Storage',
+                {
+                    'Total Storage':
+                        hardware.storage,
+
+                    'Used Storage':
+                        hardware.usedStorage
+                }
+            ) +
+
+            createVerificationSection(
+                data.verification
+            );
+
+        /*
+         * Pre-fill values if the engine managed
+         * to retrieve them.
+         */
+
+        if (
+            battery.health &&
+            !batteryHealthInput.value
+        ) {
+
+            const healthMatch =
+                String(battery.health)
+                    .match(/\d+/);
+
+            if (healthMatch) {
+
+                batteryHealthInput.value =
+                    healthMatch[0];
+            }
+        }
+
+        if (
+            battery.cycleCount &&
+            !cycleCountInput.value
+        ) {
+
+            const cycleMatch =
+                String(battery.cycleCount)
+                    .match(/\d+/);
+
+            if (cycleMatch) {
+
+                cycleCountInput.value =
+                    cycleMatch[0];
+            }
+        }
+
+        updateBatteryEstimate();
+
+        manualInspectionPanel.style.display =
+            'block';
+
+        manualInspectionPanel.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        diagnosticsStatus.textContent =
+            'Error';
+
+        diagnosticsMessage.textContent =
+            'An error occurred while running diagnostics.';
+
+    } finally {
+
+        diagnosticBtn.disabled =
+            false;
+
+        runAgainBtn.disabled =
+            false;
+
+        generateReportBtn.disabled =
+            false;
+    }
+}
+
+
+diagnosticBtn.addEventListener(
+    'click',
+    runDiagnostics
+);
+
+
+runAgainBtn.addEventListener(
+    'click',
+    runDiagnostics
+);
+
+
+/* ============================================================
+   GET MANUAL FUNCTIONAL TEST RESULTS
+============================================================ */
+
+function getManualTests() {
+
+    return {
+
+        battery: {
+
+            health:
+                batteryHealthInput.value
+                    ? `${batteryHealthInput.value}%`
+                    : 'Not provided',
+
+            cycleCount:
+                cycleCountInput.value ||
+                'Not provided',
+
+            estimatedCapacity:
+                estimatedCapacity.textContent
+        },
+
+        display: {
+
+            display:
+                document.getElementById(
+                    'displayTest'
+                ).value,
+
+            touchScreen:
+                document.getElementById(
+                    'touchTest'
+                ).value
+        },
+
+        camera: {
+
+            rearCamera:
+                document.getElementById(
+                    'rearCameraTest'
+                ).value,
+
+            frontCamera:
+                document.getElementById(
+                    'frontCameraTest'
+                ).value,
+
+            flash:
+                document.getElementById(
+                    'flashTest'
+                ).value
+        },
+
+        biometric: {
+
+            type:
+                biometricLabel.textContent,
+
+            status:
+                document.getElementById(
+                    'biometricTest'
+                ).value
+        },
+
+        buttons: {
+
+            power:
+                document.getElementById(
+                    'powerButtonTest'
+                ).value,
+
+            volumeUp:
+                document.getElementById(
+                    'volumeUpTest'
+                ).value,
+
+            volumeDown:
+                document.getElementById(
+                    'volumeDownTest'
+                ).value
+        },
+
+        audio: {
+
+            speaker:
+                document.getElementById(
+                    'speakerTest'
+                ).value,
+
+            earpiece:
+                document.getElementById(
+                    'earpieceTest'
+                ).value,
+
+            microphone:
+                document.getElementById(
+                    'microphoneTest'
+                ).value
+        },
+
+        other: {
+
+            charging:
+                document.getElementById(
+                    'chargingTest'
+                ).value,
+
+            vibration:
+                document.getElementById(
+                    'vibrationTest'
+                ).value
+        }
+    };
+}
+
+
+/* ============================================================
+   GENERATE REPORT
+============================================================ */
+
+generateReportBtn.addEventListener(
+    'click',
+    () => {
+
+        if (!lastDiagnostics) {
+
+            alert(
+                'Run diagnostics before generating a report.'
+            );
+
+            return;
+        }
+
+        const data =
+            lastDiagnostics;
+
+        const device =
+            data.device || {};
+
+        const battery =
+            data.battery || {};
+
+        const hardware =
+            data.hardware || {};
+
+        const verification =
+            data.verification || {};
+
+        const manual =
+            getManualTests();
+
+
+        const report = `
+VERICORE
+PROFESSIONAL DEVICE DIAGNOSTIC REPORT
+
+==================================================
+DEVICE INFORMATION
+==================================================
+
+Model: ${
+    getValue(device.model)
+}
+
+Manufacturer: ${
+    getValue(device.manufacturer)
+}
+
+OS Version: ${
+    getValue(
+        device.iosVersion ||
+        device.androidVersion
+    )
+}
+
+Serial Number: ${
+    getValue(
+        device.serialNumber ||
+        device.serial
+    )
+}
+
+Connection: ${
+    getValue(device.connection)
+}
+
+
+==================================================
+AUTOMATIC DIAGNOSTICS
+==================================================
+
+MODEL REFERENCE BATTERY CAPACITY
+
+${
+    getValue(
+        battery.designCapacity
+    )
+}
+
+
+STORAGE
+
+Total Storage: ${
+    getValue(hardware.storage)
+}
+
+Used Storage: ${
+    getValue(hardware.usedStorage)
+}
+
+
+==================================================
+MANUAL BATTERY INSPECTION
+==================================================
+
+Battery Health:
+${manual.battery.health}
+
+Cycle Count:
+${manual.battery.cycleCount}
+
+Estimated Current Capacity:
+${manual.battery.estimatedCapacity}
+
+
+==================================================
+MANUAL FUNCTIONAL TESTS
+==================================================
+
+DISPLAY
+
+Display:
+${manual.display.display}
+
+Touch Screen:
+${manual.display.touchScreen}
+
+
+CAMERAS
+
+Rear Camera:
+${manual.camera.rearCamera}
+
+Front Camera:
+${manual.camera.frontCamera}
+
+Flash:
+${manual.camera.flash}
+
+
+BIOMETRIC AUTHENTICATION
+
+${manual.biometric.type}:
+${manual.biometric.status}
+
+
+BUTTONS
+
+Power Button:
+${manual.buttons.power}
+
+Volume Up:
+${manual.buttons.volumeUp}
+
+Volume Down:
+${manual.buttons.volumeDown}
+
+
+AUDIO
+
+Speaker:
+${manual.audio.speaker}
+
+Earpiece:
+${manual.audio.earpiece}
+
+Microphone:
+${manual.audio.microphone}
+
+
+OTHER FUNCTIONS
+
+Charging:
+${manual.other.charging}
+
+Vibration:
+${manual.other.vibration}
+
+
+==================================================
+VERICORE VERIFICATION
+==================================================
+
+Overall Score:
+${
+    getValue(
+        verification.overallScore
+    )
+}
+
+Repair Decision:
+${
+    getValue(
+        verification.decision
+    )
+}
+
+Priority:
+${
+    getValue(
+        verification.priority
+    )
+}
+
+Certificate Grade:
+${
+    getValue(
+        verification.certificateGrade
+    )
+}
+
+Inspection Completeness:
+${
+    verification.inspectionCompletenessPercent !== undefined
+        ? verification.inspectionCompletenessPercent + '%'
+        : 'Unknown'
+}
+
+Suspicious Components:
+${
+    getValue(
+        verification.suspiciousComponents
+    )
+}
+
+
+==================================================
+
+Generated by VeriCore
+Professional Device Verification System
+
+==================================================
+`;
+
+        const blob =
+            new Blob(
+                [report],
+                {
+                    type:
+                        'text/plain;charset=utf-8'
+                }
+            );
+
+        const url =
+            URL.createObjectURL(blob);
+
+        const link =
+            document.createElement('a');
+
+        link.href =
+            url;
+
+        const safeModel =
+            (
+                device.model ||
+                'Device'
+            ).replace(
+                /[^a-z0-9]+/gi,
+                '-'
+            );
+
+        link.download =
+            `VeriCore-${safeModel}-Report.txt`;
+
+        document.body.appendChild(
+            link
+        );
+
+        link.click();
+
+        document.body.removeChild(
+            link
+        );
+
+        URL.revokeObjectURL(
+            url
+        );
+    }
+);
+
+</script>
+
+</body>
+
+</html>
